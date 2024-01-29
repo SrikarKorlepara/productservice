@@ -12,7 +12,6 @@ import org.springframework.web.client.RequestCallback;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 @Service("fakeStoreProductService")  // this is also a special class
