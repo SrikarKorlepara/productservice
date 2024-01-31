@@ -9,11 +9,10 @@ import java.util.Optional;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product,Long> {
+    Optional<Product> findById(Long id);
 
     List<Product> findByTitleContaining(String word);
 
-    long deleteByTitle(String title);
+    Product save(Product product);
 
-    Optional<Product> findById(Long id);
-    //Product save(Product product);
 }

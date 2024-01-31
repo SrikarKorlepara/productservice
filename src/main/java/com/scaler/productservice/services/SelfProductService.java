@@ -20,22 +20,23 @@ public class SelfProductService implements ProductService{
     private final CategoryRepository categoryRepository;
 
     @Autowired
-    public SelfProductService(RestTemplate restTemplate,
-                              ProductRepository productRepository,
+    public SelfProductService(RestTemplate restTemplate,ProductRepository productRepository,
                               CategoryRepository categoryRepository){
 
         this.restTemplate=restTemplate;
-        this.productRepository = productRepository;
+        this.productRepository=productRepository;
         this.categoryRepository = categoryRepository;
     }
     @Override
     public Product getSingleProduct(Long id) throws ProductNotExistsException {
-        Optional<Product> productOptional = productRepository.findById(id);
-        if(productOptional.isEmpty()) {
-            throw new ProductNotExistsException("Product with id: " + id + " doesnt exists");
-        }
 
-        return productOptional.get();
+        Optional<Product> optionalProduct = productRepository.findById(id);
+        if (optionalProduct.isEmpty())
+        {
+            throw new ProductNotExistsException("Product with the id: "+ id + " doesnt exist.");
+        }
+        return optionalProduct.get();
+
     }
 
     @Override
@@ -51,12 +52,21 @@ public class SelfProductService implements ProductService{
     @Override
     public Product addNewProduct(Product product) {
 //        Category category = product.getCategory();
-//        if(category.getId() == null) {
-//            Category savedCategory = categoryRepository.save(category);
+//        if(category.getId() == null){
+//            Category savedCategory= categoryRepository.save(category);
 //            product.setCategory(savedCategory);
 //        }
-//        return productRepository.save(product);
-        return null;
+
+        Optional<Category> categoryOptional = categoryRepository.findByName(product.getCategory().getName());
+
+        if (categoryOptional.isEmpty()){
+            Category savedCategory = categoryRepository.save(product.getCategory());
+            product.setCategory(savedCategory);
+        }
+        else{
+            product.setCategory(categoryOptional.get());
+        }
+        return productRepository.save(product);
     }
 
     @Override

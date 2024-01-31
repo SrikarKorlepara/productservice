@@ -22,6 +22,6 @@ class ProductserviceApplicationTests {
 	void testQueries(){
 
 		productRepository.findByTitleContaining("Srikar");
-		productRepository.deleteByTitle("Srikar");
+//		productRepository.deleteByTitle("Srikar");
 	}
 }

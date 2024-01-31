@@ -2,11 +2,8 @@ package com.scaler.productservice.models;
 
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.Date;
 
 @Getter
 @Setter
@@ -14,8 +11,4 @@ import java.util.Date;
 public class Category extends BaseModel{
 
     private String name;
-    private Date createdAt;
-    private Date lastUpdatedAt;
-    private boolean isDeleted;
-
 }
