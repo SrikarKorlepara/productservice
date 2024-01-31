@@ -37,16 +37,14 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public Product getSingleProduct(@PathVariable("id") Long id) throws ProductNotExistsException {
+    public ResponseEntity<Product> getSingleProduct(@PathVariable("id") Long id) throws ProductNotExistsException {
 
-        return productService.getSingleProduct(id);
+        return new ResponseEntity<>(productService.getSingleProduct(id),HttpStatus.OK);
     }
 
     @PostMapping()
     public Product addNewProduct(@RequestBody Product product){
-        Product p = new Product();
-        p.setTitle("A new Product");
-        return p;
+        return productService.addNewProduct(product);
     }
 
     @PatchMapping("/{id}")
