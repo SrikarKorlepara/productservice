@@ -65,7 +65,7 @@ public class FakeStoreProductService implements ProductService{
         fakeStoreProductDto.setPrice(product.getPrice());
         fakeStoreProductDto.setImage(product.getImageURL());
         fakeStoreProductDto.setDescription(product.getDescription());
-        fakeStoreProductDto.setId(product.getId());
+//        fakeStoreProductDto.setId(product.getId());
         fakeStoreProductDto.setCategory(product.getCategory().getName());
         RequestCallback requestCallback = restTemplate.httpEntityCallback(fakeStoreProductDto, FakeStoreProductDto.class);
                                                                         // here fakeStoreProductDto is the request body that we will be sending to the client.

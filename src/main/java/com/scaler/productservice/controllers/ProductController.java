@@ -18,11 +18,12 @@ public class ProductController {
 
     private ProductService productService;
 
-    @Autowired
+
 //    FakeStoreProductService, which is an implementation of the ProductService Interface is also
 //    a special class which is annotated as @Service. therefore we can use the autowired annotation
 //    here since we will also be having a bean of ProductService in the applicationcontext of Spring
 //    Here we don't have any conflict since ProductService class is implemented by only one class.
+    @Autowired
     public ProductController(@Qualifier("selfProductService") ProductService productService){
         this.productService=productService;
     }
@@ -49,11 +50,11 @@ public class ProductController {
 
     @PatchMapping("/{id}")
     public Product updateProduct(@PathVariable("id") Long id, @RequestBody Product product){
-        return new Product();
+        return productService.updateProduct(id,product);
     }
 
     @PutMapping("/{id}")
-    public Product replaceProduct(@PathVariable("id") Long id,@RequestBody Product product){
+    public Product replaceProduct(@PathVariable("id") Long id,@RequestBody Product product) throws ProductNotExistsException {
 
         return productService.replaceProduct(id,product);
 

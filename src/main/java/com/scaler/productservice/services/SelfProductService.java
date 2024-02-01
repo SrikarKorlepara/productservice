@@ -41,22 +41,37 @@ public class SelfProductService implements ProductService{
 
     @Override
     public List<Product> getAllProducts() {
-        return null;
+        List<Product> products = productRepository.findAll();
+        return products;
     }
 
     @Override
-    public Product replaceProduct(Long id, Product product) {
-        return null;
+    public Product replaceProduct(Long id, Product product) throws ProductNotExistsException{
+        Optional<Product> productOptional = productRepository.findById(id);
+        if(productOptional.isEmpty()){
+            throw new ProductNotExistsException("Product with the id : "+ id + " doesnt exist");
+        }
+        Product productToUpdate = productOptional.get();
+        Optional<Category> categoryOptional = categoryRepository.findByName(product.getCategory().getName());
+        if(categoryOptional.isEmpty()){
+            Category savedCategory=categoryRepository.save(product.getCategory());
+            productToUpdate.setCategory(savedCategory);
+        }
+        else{
+            //productToUpdate.setCategory(product.getCategory()); for some reason this is not working. find out why
+            productToUpdate.setCategory(categoryOptional.get());
+        }
+        productToUpdate.setTitle(product.getTitle());
+        productToUpdate.setPrice(product.getPrice());
+        productToUpdate.setDescription(product.getDescription());
+        productToUpdate.setImageURL(product.getImageURL());
+        return productRepository.save(productToUpdate);
+
+
     }
 
     @Override
     public Product addNewProduct(Product product) {
-//        Category category = product.getCategory();
-//        if(category.getId() == null){
-//            Category savedCategory= categoryRepository.save(category);
-//            product.setCategory(savedCategory);
-//        }
-
         Optional<Category> categoryOptional = categoryRepository.findByName(product.getCategory().getName());
 
         if (categoryOptional.isEmpty()){
@@ -71,7 +86,28 @@ public class SelfProductService implements ProductService{
 
     @Override
     public Product updateProduct(Long id, Product product) {
-        return null;
+        Optional<Product> productOptional= productRepository.findById(id);
+        if (productOptional.isEmpty()){
+            throw new RuntimeException();
+        }
+        Product savedProduct = productOptional.get();
+
+        if (product.getTitle()!=null){
+            savedProduct.setTitle(product.getTitle());
+        }
+        if (product.getDescription()!=null){
+            savedProduct.setDescription(product.getDescription());
+        }
+        if (product.getPrice()!=null){
+            savedProduct.setPrice(product.getPrice());
+        }
+        if (product.getImageURL()!=null){
+            savedProduct.setImageURL(product.getImageURL());
+        }
+        if (product.getCategory()!=null){
+            savedProduct.setCategory(product.getCategory());
+        }
+        return productRepository.save(savedProduct);
     }
 
     @Override

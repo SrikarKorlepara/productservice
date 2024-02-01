@@ -4,6 +4,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 @Getter
 @Setter
@@ -11,9 +13,9 @@ import lombok.Setter;
 public class Product extends BaseModel{
 
     private String title;
-    private double price;
+    private Double price;
     private String description;
     private String imageURL;
-    @ManyToOne
+    @ManyToOne()
     private Category category;
 }
