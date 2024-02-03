@@ -7,7 +7,7 @@ import com.scaler.productservice.repositories.CategoryRepository;
 import com.scaler.productservice.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
+
 
 import java.util.List;
 import java.util.Optional;
@@ -15,34 +15,30 @@ import java.util.Optional;
 @Service("selfProductService")
 public class SelfProductService implements ProductService{
 
-    private RestTemplate restTemplate;
+
     private ProductRepository productRepository;
-    private final CategoryRepository categoryRepository;
+    private CategoryRepository categoryRepository;
 
     @Autowired
-    public SelfProductService(RestTemplate restTemplate,ProductRepository productRepository,
+    public SelfProductService(ProductRepository productRepository,
                               CategoryRepository categoryRepository){
 
-        this.restTemplate=restTemplate;
         this.productRepository=productRepository;
         this.categoryRepository = categoryRepository;
     }
     @Override
     public Product getSingleProduct(Long id) throws ProductNotExistsException {
-
         Optional<Product> optionalProduct = productRepository.findById(id);
         if (optionalProduct.isEmpty())
         {
             throw new ProductNotExistsException("Product with the id: "+ id + " doesnt exist.");
         }
         return optionalProduct.get();
-
     }
 
     @Override
     public List<Product> getAllProducts() {
-        List<Product> products = productRepository.findAll();
-        return products;
+        return productRepository.findAll();
     }
 
     @Override
@@ -58,7 +54,12 @@ public class SelfProductService implements ProductService{
             productToUpdate.setCategory(savedCategory);
         }
         else{
-            //productToUpdate.setCategory(product.getCategory()); for some reason this is not working. find out why
+            //productToUpdate.setCategory(product.getCategory()); //for some reason this is not working. find out why. Found out why
+            //here categoryOptional.isEmpty() is false. meaning we have a category in the db with that specific name.
+            // but here we are trying to use product.getCategory() which has an address reference that doesn't match with
+            // categoryOptional.get() . That means product.getCategory() is not actually saved in the system. so we are getting
+            // the error as this is not saved in the database whereas categoryOptional.get() give the address location of a category
+            // that is already present in the database.
             productToUpdate.setCategory(categoryOptional.get());
         }
         productToUpdate.setTitle(product.getTitle());
@@ -78,7 +79,8 @@ public class SelfProductService implements ProductService{
             Category savedCategory = categoryRepository.save(product.getCategory());
             product.setCategory(savedCategory);
         }
-        else{
+        else{//productToUpdate.setCategory(product.getCategory());
+            // doesnt work because product.getCategory() is not saved and doesnt have same address as categoryOptional.get()
             product.setCategory(categoryOptional.get());
         }
         return productRepository.save(product);
