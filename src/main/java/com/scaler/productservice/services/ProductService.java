@@ -11,7 +11,7 @@ public interface ProductService {
     List<Product> getAllProducts();
     Product replaceProduct(Long id,Product product) throws ProductNotExistsException;
     Product addNewProduct(Product product);
-    Product updateProduct(Long id,Product product);
+    Product updateProduct(Long id,Product product) throws ProductNotExistsException;
     boolean deleteProduct(Long id);
 
 

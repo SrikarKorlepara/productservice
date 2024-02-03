@@ -42,7 +42,7 @@ public class SelfProductService implements ProductService{
     }
 
     @Override
-    public Product replaceProduct(Long id, Product product) throws ProductNotExistsException{
+    public Product replaceProduct(Long id, Product product) throws ProductNotExistsException {
         Optional<Product> productOptional = productRepository.findById(id);
         if(productOptional.isEmpty()){
             throw new ProductNotExistsException("Product with the id : "+ id + " doesnt exist");
@@ -87,10 +87,10 @@ public class SelfProductService implements ProductService{
     }
 
     @Override
-    public Product updateProduct(Long id, Product product) {
+    public Product updateProduct(Long id, Product product) throws ProductNotExistsException {
         Optional<Product> productOptional= productRepository.findById(id);
         if (productOptional.isEmpty()){
-            throw new RuntimeException();
+            throw new ProductNotExistsException("Product with id "+ id + " does not exist");
         }
         Product savedProduct = productOptional.get();
 

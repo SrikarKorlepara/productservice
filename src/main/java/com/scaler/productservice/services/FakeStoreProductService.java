@@ -39,11 +39,10 @@ public class FakeStoreProductService implements ProductService{
 
     }
     @Override
-    public Product getSingleProduct(Long id) throws ProductNotExistsException {
+    public Product getSingleProduct(Long id)  throws ProductNotExistsException {
         //int i = 1 / 0;
         FakeStoreProductDto productDto=restTemplate.getForObject("https://fakestoreapi.com/products/" + id, FakeStoreProductDto.class);
-
-        if (productDto == null) throw new ProductNotExistsException("Product with id : " + id + " does not exists.");
+        if(productDto == null) throw new ProductNotExistsException(" Product with the id "+ id +" doesn't exists");
         return convertFakeStoreProductToProduct(productDto);
 
     }
@@ -59,7 +58,7 @@ public class FakeStoreProductService implements ProductService{
     }
 
     @Override
-    public Product replaceProduct(Long id , Product product){
+    public Product replaceProduct(Long id , Product product) throws ProductNotExistsException{
         FakeStoreProductDto fakeStoreProductDto = new FakeStoreProductDto();
         fakeStoreProductDto.setTitle(product.getTitle());
         fakeStoreProductDto.setPrice(product.getPrice());
@@ -80,7 +79,7 @@ public class FakeStoreProductService implements ProductService{
     }
 
     @Override
-    public Product updateProduct(Long id, Product product) {
+    public Product updateProduct(Long id, Product product) throws ProductNotExistsException{
         return null;
     }
 

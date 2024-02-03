@@ -24,12 +24,13 @@ public class ProductController {
 //    here since we will also be having a bean of ProductService in the applicationcontext of Spring
 //    Here we don't have any conflict since ProductService class is implemented by only one class.
     @Autowired
-    public ProductController(@Qualifier("selfProductService") ProductService productService){
+    public ProductController(@Qualifier("fakeStoreProductService") ProductService productService){
         this.productService=productService;
     }
 
     @GetMapping() // serves request at localhost:8080/products
-    public ResponseEntity<List<Product>> getAllProducts(){
+    public ResponseEntity<List<Product>> getAllProducts() throws ArithmeticException{
+        //int i = 1/0;
         ResponseEntity<List<Product>> response = new ResponseEntity<>(
                 productService.getAllProducts(), HttpStatus.NOT_FOUND
         );
@@ -49,7 +50,7 @@ public class ProductController {
     }
 
     @PatchMapping("/{id}")
-    public Product updateProduct(@PathVariable("id") Long id, @RequestBody Product product){
+    public Product updateProduct(@PathVariable("id") Long id, @RequestBody Product product) throws ProductNotExistsException{
         return productService.updateProduct(id,product);
     }
 
@@ -65,9 +66,9 @@ public class ProductController {
 
     }
 
-    @ExceptionHandler(ProductNotExistsException.class)
-    public ResponseEntity<Void> handleProductNotExistException(){
-        return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-    }
+//    @ExceptionHandler(ProductNotExistsException.class)
+//    public ResponseEntity<Void> handleProductNotExistException(){
+//        return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+//    }
 
 }
