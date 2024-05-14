@@ -76,11 +76,10 @@ public class SelfProductService implements ProductService{
         Optional<Category> categoryOptional = categoryRepository.findByName(product.getCategory().getName());
 
         if (categoryOptional.isEmpty()){
-            Category savedCategory = categoryRepository.save(product.getCategory());
-            product.setCategory(savedCategory);
+
+            //product.setCategory(categoryRepository.save(product.getCategory()));
         }
-        else{//productToUpdate.setCategory(product.getCategory());
-            // doesnt work because product.getCategory() is not saved and doesnt have same address as categoryOptional.get()
+        else{
             product.setCategory(categoryOptional.get());
         }
         return productRepository.save(product);

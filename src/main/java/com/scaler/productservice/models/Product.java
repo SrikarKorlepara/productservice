@@ -1,7 +1,9 @@
 package com.scaler.productservice.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,6 +18,8 @@ public class Product extends BaseModel{
     private Double price;
     private String description;
     private String imageURL;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY,cascade = {CascadeType.PERSIST,CascadeType.MERGE})
+    //@JsonIgnore
     private Category category;
+    private int numberOfSales;
 }

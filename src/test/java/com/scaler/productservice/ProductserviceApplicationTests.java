@@ -1,6 +1,8 @@
 package com.scaler.productservice;
 
+import com.scaler.productservice.models.Category;
 import com.scaler.productservice.models.Product;
+import com.scaler.productservice.repositories.CategoryRepository;
 import com.scaler.productservice.repositories.ProductRepository;
 import com.scaler.productservice.repositories.projections.ProductWithIdAndTitle;
 import jakarta.transaction.Transactional;
@@ -10,11 +12,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Commit;
 
 import java.util.List;
+import java.util.Optional;
 
 @SpringBootTest
 class ProductserviceApplicationTests {
 	@Autowired
 	private ProductRepository productRepository;
+
+	@Autowired
+	private CategoryRepository categoryRepository;
 
 	@Test
 	void contextLoads() {
@@ -50,6 +56,12 @@ class ProductserviceApplicationTests {
 //		 	System.out.println(product.getTitle());
 //		}
 
+		Optional<Category> category = categoryRepository.findById(52L);
+		if(true){
+			Category category1 = category.get();
+			List<Product> products= category1.getProducts();
+			products.get(0);
+		}
 	}
 }
 

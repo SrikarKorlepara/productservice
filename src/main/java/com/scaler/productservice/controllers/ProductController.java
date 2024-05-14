@@ -24,7 +24,7 @@ public class ProductController {
 //    here since we will also be having a bean of ProductService in the applicationcontext of Spring
 //    Here we don't have any conflict since ProductService class is implemented by only one class.
     @Autowired
-    public ProductController(@Qualifier("fakeStoreProductService") ProductService productService){
+    public ProductController(@Qualifier("selfProductService") ProductService productService){
         this.productService=productService;
     }
 
